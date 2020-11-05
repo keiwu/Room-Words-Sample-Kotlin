@@ -41,8 +41,13 @@ interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY word ASC")
     fun getAlphabetizedWords(): LiveData<List<Word>>
 
+    //insert word one by one
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(word: Word)
+
+    //insert word all in once
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertWords(vararg words: Word)
 
     @Query("DELETE FROM word_table")
     fun deleteAll()

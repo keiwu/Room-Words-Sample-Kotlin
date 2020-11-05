@@ -17,6 +17,9 @@ package com.example.android.roomwordssample
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.example.android.roomwordssample.service.NetworkReturnedWord
+import com.example.android.roomwordssample.service.NetworkWordContainer
+import com.example.android.roomwordssample.service.asDatabaseModel
 
 /**
  * Abstracted Repository as promoted by the Architecture Guide.
@@ -36,5 +39,21 @@ class WordRepository(private val wordDao: WordDao) {
     @WorkerThread
     suspend fun insert(word: Word) {
         wordDao.insert(word)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun insertWords(wordList: List<String>) {
+        var wordsContainer =
+                updateNetworkReturnedWordsContainer(wordList)
+        wordDao.insertWords(*wordsContainer!!.asDatabaseModel())
+    }
+
+    private fun updateNetworkReturnedWordsContainer(returnedWords: List<String>): NetworkWordContainer? {
+        var networkReturnedWordList = arrayListOf<NetworkReturnedWord>()
+        for (word in returnedWords) {
+            networkReturnedWordList.add(NetworkReturnedWord(word))
+        }
+        return NetworkWordContainer(networkReturnedWordList)
     }
 }

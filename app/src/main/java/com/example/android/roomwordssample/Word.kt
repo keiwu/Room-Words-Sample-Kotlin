@@ -33,3 +33,16 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "word_table")
 data class Word(@PrimaryKey @ColumnInfo(name = "word") val word: String)
+
+fun List<Word>.asDomainModel(): List<AWord> {
+    return map {
+        AWord(
+                word = it.word
+        )
+    }
+}
+
+data class AWord(
+        val word: String
+)
+

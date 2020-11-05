@@ -57,4 +57,8 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(word: Word) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(word)
     }
+
+    fun insertWords(wordList: List<String>) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insertWords(wordList)
+    }
 }

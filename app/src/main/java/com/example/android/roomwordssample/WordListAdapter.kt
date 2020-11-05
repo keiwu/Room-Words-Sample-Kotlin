@@ -17,6 +17,7 @@
 package com.example.android.roomwordssample
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.WordViewHolder>() {
-
+    private var counter = 0
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var words = emptyList<Word>() // Cached copy of words
 
@@ -45,6 +46,8 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
     internal fun setWords(words: List<Word>) {
         this.words = words
         notifyDataSetChanged()
+        counter++
+        Log.d("NotifyDataChanged", "called " + counter + " times")
     }
 
     override fun getItemCount() = words.size

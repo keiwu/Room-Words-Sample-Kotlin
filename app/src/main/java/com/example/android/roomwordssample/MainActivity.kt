@@ -120,12 +120,22 @@ class MainActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<AllPoems>, response: Response<AllPoems>) {
                     val allPoemsAl: ArrayList<AllPoems.Poem>? = response.body()?.poems
                     if (allPoemsAl != null) {
+                        val wordList = ArrayList<String>()
                         for (poem in allPoemsAl){
                             val word = poem.title?.let { Word(it) }
-                            word?.let { wordViewModel.insert(it) }
+
+                            //insert word one by one to database
+                            //word?.let { wordViewModel.insert(it) }
+
+                            poem.title?.let { wordList.add(it) }
+
                         }
 
+                        //insert words all at once
+                        wordViewModel.insertWords(wordList)
+
                     }
+
                 }
 
                 override fun onFailure(call: Call<AllPoems>, t: Throwable) {
