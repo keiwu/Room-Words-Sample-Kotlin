@@ -19,6 +19,9 @@ package com.example.android.roomwordssample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -53,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 .get(WordViewModel::class.java)
     }
 
+    lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +88,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, NewWordActivity::class.java)
             startActivityForResult(intent, newWordActivityRequestCode)
         }
+
+        progressBar = findViewById(R.id.progressBar)
 
         getAllPoems()
     }
@@ -119,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<AllPoems> {
                 override fun onResponse(call: Call<AllPoems>, response: Response<AllPoems>) {
                     val allPoemsAl: ArrayList<AllPoems.Poem>? = response.body()?.poems
+                    Log.d("NotifyDataChanged", "poems count" + (allPoemsAl?.size ?: 0))
                     if (allPoemsAl != null) {
                         val wordList = ArrayList<String>()
                         for (poem in allPoemsAl){
@@ -135,11 +142,14 @@ class MainActivity : AppCompatActivity() {
                         wordViewModel.insertWords(wordList)
 
                     }
+                    progressBar.visibility = View.GONE
 
                 }
 
                 override fun onFailure(call: Call<AllPoems>, t: Throwable) {
                     println("res")
+                    progressBar.visibility = View.GONE
+
                 }
             }
         )

@@ -87,12 +87,12 @@ abstract class WordRoomDatabase : RoomDatabase() {
         fun populateDatabase(wordDao: WordDao) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
-            wordDao.deleteAll()
+            //wordDao.deleteAll()
 
-            var word = Word("Hello")
-            wordDao.insert(word)
-            word = Word("World!")
-            wordDao.insert(word)
+//            var word = Word("Hello")
+//            wordDao.insert(word)
+//            word = Word("World!")
+//            wordDao.insert(word)
         }
     }
 }
