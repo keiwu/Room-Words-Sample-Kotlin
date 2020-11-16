@@ -17,6 +17,7 @@ package com.example.android.roomwordssample
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.example.android.roomwordssample.db.WordDao
 import com.example.android.roomwordssample.service.NetworkReturnedWord
 import com.example.android.roomwordssample.service.NetworkWordContainer
 import com.example.android.roomwordssample.service.asDatabaseModel

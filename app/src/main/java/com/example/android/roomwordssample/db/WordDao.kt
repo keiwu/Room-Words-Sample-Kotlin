@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.example.android.roomwordssample
+package com.example.android.roomwordssample.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.android.roomwordssample.Word
 
 /**
  * The Room Magic is in this file, where you map a method call to an SQL query.

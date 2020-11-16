@@ -21,6 +21,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.android.roomwordssample.db.WordDao
+import com.example.android.roomwordssample.db.WordRoomDatabase
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
