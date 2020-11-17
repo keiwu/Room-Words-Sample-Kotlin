@@ -94,22 +94,22 @@ class MainActivity : AppCompatActivity() {
         getAllPoems()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intentData)
-
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            intentData?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let { reply ->
-                val word = Word(reply)
-                wordViewModel.insert(word)
-            }
-        } else {
-            Toast.makeText(
-                    applicationContext,
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG
-            ).show()
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, intentData)
+//
+//        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
+//            intentData?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let { reply ->
+//                val word = Word(reply)
+//                wordViewModel.insert(word)
+//            }
+//        } else {
+//            Toast.makeText(
+//                    applicationContext,
+//                    R.string.empty_not_saved,
+//                    Toast.LENGTH_LONG
+//            ).show()
+//        }
+//    }
 
     fun getAllPoems() {
         val gson: Gson = GsonBuilder()
@@ -127,14 +127,16 @@ class MainActivity : AppCompatActivity() {
                     val allPoemsAl: ArrayList<AllPoems.Poem>? = response.body()?.poems
                     Log.d("NotifyDataChanged", "poems count" + (allPoemsAl?.size ?: 0))
                     if (allPoemsAl != null) {
-                        val wordList = ArrayList<String>()
+                        val wordList = ArrayList<AWord>()
                         for (poem in allPoemsAl){
-                            val word = poem.title?.let { Word(it) }
+                            val id = poem.id
+                            val author = poem.author
+                            val paragraph = poem.paragraph
+                            val strain = poem.strain
+                            val tag = poem.tag
+                            val title = poem.title
 
-                            //insert word one by one to database
-                            //word?.let { wordViewModel.insert(it) }
-
-                            poem.title?.let { wordList.add(it) }
+                            wordList.add(AWord(id, author, paragraph, strain, tag, title!!))
 
                         }
 

@@ -10,8 +10,12 @@ data class NetworkWordContainer(val networkReturnedWord: List<NetworkReturnedWor
 
 @JsonClass(generateAdapter = true)
 data class NetworkReturnedWord(
-        val word: String
-
+        var id: String?,
+        var author: String?,
+        var paragraph: String?,
+        var strain: String?,
+        var tag: String?,
+        var title: String
 )
 
 
@@ -23,7 +27,12 @@ data class NetworkReturnedWord(
 fun NetworkWordContainer.asDomainModel(): List<AWord> {
     return networkReturnedWord.map {
         AWord(
-                word = it.word
+                id = it.id,
+                author = it.author,
+                paragraph = it.paragraph,
+                strain = it.strain,
+                tag = it.tag,
+                title = it.title
         )
     }
 }
@@ -31,7 +40,12 @@ fun NetworkWordContainer.asDomainModel(): List<AWord> {
 fun NetworkWordContainer.asDatabaseModel(): Array<Word> {
     return networkReturnedWord.map {
         Word(
-                word = it.word
+                id = it.id,
+                author = it.author,
+                paragraph = it.paragraph,
+                strain = it.strain,
+                tag = it.tag,
+                title = it.title
         )
     }.toTypedArray()
 }

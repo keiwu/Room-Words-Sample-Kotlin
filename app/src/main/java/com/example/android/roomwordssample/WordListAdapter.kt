@@ -40,7 +40,7 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val current = words[position]
-        holder.wordItemView.text = current.word
+        holder.wordItemView.text = current.author + " " +  current.title
     }
 
     internal fun setWords(words: List<Word>) {

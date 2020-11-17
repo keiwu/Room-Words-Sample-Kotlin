@@ -39,7 +39,7 @@ interface WordDao {
     // Always holds/caches latest version of data. Notifies its active observers when the
     // data has changed. Since we are getting all the contents of the database,
     // we are notified whenever any of the database contents have changed.
-    @Query("SELECT * FROM word_table ORDER BY word ASC")
+    @Query("SELECT * FROM word_table ORDER BY title ASC")
     fun getAlphabetizedWords(): LiveData<List<Word>>
 
     //insert word one by one

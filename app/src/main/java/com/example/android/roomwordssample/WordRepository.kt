@@ -44,16 +44,16 @@ class WordRepository(private val wordDao: WordDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insertWords(wordList: List<String>) {
+    suspend fun insertWords(wordList: List<AWord>) {
         var wordsContainer =
                 updateNetworkReturnedWordsContainer(wordList)
         wordDao.insertWords(*wordsContainer!!.asDatabaseModel())
     }
 
-    private fun updateNetworkReturnedWordsContainer(returnedWords: List<String>): NetworkWordContainer? {
+    private fun updateNetworkReturnedWordsContainer(returnedWords: List<AWord>): NetworkWordContainer? {
         var networkReturnedWordList = arrayListOf<NetworkReturnedWord>()
         for (word in returnedWords) {
-            networkReturnedWordList.add(NetworkReturnedWord(word))
+            networkReturnedWordList.add(NetworkReturnedWord(word.id, word.author, word.paragraph, word.strain, word.tag, word.title))
         }
         return NetworkWordContainer(networkReturnedWordList)
     }

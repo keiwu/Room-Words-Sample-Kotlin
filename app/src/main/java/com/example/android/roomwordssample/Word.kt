@@ -16,6 +16,8 @@
 
 package com.example.android.roomwordssample
 
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -32,17 +34,36 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "word_table")
-data class Word(@PrimaryKey @ColumnInfo(name = "word") val word: String)
+data class Word(
+
+                var id: String?,
+                var author: String?,
+                var paragraph: String?,
+                var strain: String?,
+                var tag: String?,
+                @PrimaryKey @ColumnInfo(name = "title")
+                var title: String)
 
 fun List<Word>.asDomainModel(): List<AWord> {
     return map {
         AWord(
-                word = it.word
+                id = it.id,
+                author = it.author,
+                paragraph = it.paragraph,
+                strain = it.strain,
+                tag = it.tag,
+                title = it.title
+
         )
     }
 }
 
 data class AWord(
-        val word: String
+        var id: String?,
+        var author: String?,
+        var paragraph: String?,
+        var strain: String?,
+        var tag: String?,
+        var title: String
 )
 
