@@ -31,6 +31,7 @@ So, we are leaving the template code in. -->
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
+        app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/recyclerview_item"
         android:padding="@dimen/big_padding"
         app:layout_constraintBottom_toBottomOf="parent"
