@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.roomwordssample.model.AllPoems
 import com.example.android.roomwordssample.service.WordsApi
+import com.example.android.roomwordssample.ui.ReposAdapter
 import com.example.android.roomwordssample.ui.SearchPoemsViewModel
 import com.example.android.roomwordssample.ui.WordViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var wordViewModel: WordViewModel
     private lateinit var viewModel: SearchPoemsViewModel
     private var searchJob: Job? = null
+    private val searchRepoAdapter = ReposAdapter()
 
 
 
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.searchPoems(query).collectLatest {
                 //adapter.submitData(it)
                 Log.d("it", it.toString())
+                searchRepoAdapter.submitData(it)
             }
 
         }
@@ -89,8 +92,8 @@ class MainActivity : AppCompatActivity() {
 
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = WordListAdapter(this)
-        recyclerView.adapter = adapter
+        //val adapter = WordListAdapter(this)
+        recyclerView.adapter = searchRepoAdapter
 //        recyclerView.layoutManager = LinearLayoutManager(this)
 
         search("android", null)
@@ -106,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Observer { words ->
                     // Update the cached copy of the words in the adapter.
-                    words?.let { adapter.setWords(it) }
+                    //words?.let { adapter.setWords(it) }
                 }
         )
 
