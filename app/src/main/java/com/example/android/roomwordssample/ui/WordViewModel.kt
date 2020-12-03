@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package com.example.android.roomwordssample
+package com.example.android.roomwordssample.ui
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.android.roomwordssample.AWord
+import com.example.android.roomwordssample.Word
+import com.example.android.roomwordssample.WordRepository
 import com.example.android.roomwordssample.db.WordRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

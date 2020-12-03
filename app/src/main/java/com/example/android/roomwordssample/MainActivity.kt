@@ -16,23 +16,27 @@
 
 package com.example.android.roomwordssample
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.paging.flatMap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.roomwordssample.model.AllPoems
 import com.example.android.roomwordssample.service.WordsApi
+import com.example.android.roomwordssample.ui.SearchPoemsViewModel
+import com.example.android.roomwordssample.ui.WordViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +51,10 @@ class MainActivity : AppCompatActivity() {
 
     private val newWordActivityRequestCode = 1
     //private lateinit var wordViewModel: WordViewModel
+    private lateinit var viewModel: SearchPoemsViewModel
+    private var searchJob: Job? = null
+
+
 
     val wordViewModel: WordViewModel by lazy {
         val activity = requireNotNull(this) {
@@ -58,15 +66,34 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var progressBar: ProgressBar
 
+    private fun search(query: String, adapter: WordListAdapter?) {
+        // Make sure we cancel the previous job before creating a new one
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.searchPoems(query).collectLatest {
+                //adapter.submitData(it)
+                Log.d("it", it.toString())
+            }
+
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // get the view model
+        viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(this))
+                .get(SearchPoemsViewModel::class.java)
+
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = WordListAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        search("android", null)
 
         // Get a new or existing ViewModel from the ViewModelProvider.
         //wordViewModel = ViewModelProvider(this).get(WordViewModel::class.java)
