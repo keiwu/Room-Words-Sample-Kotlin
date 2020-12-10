@@ -21,10 +21,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.model.Repo
 
 @Database(
-        entities = [Repo::class, RemoteKeys::class],
+        entities = [Word::class, RemoteKeys::class],
         version = 1,
         exportSchema = false
 )
@@ -46,7 +47,7 @@ abstract class RepoDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
                 Room.databaseBuilder(context.applicationContext,
-                        RepoDatabase::class.java, "Github.db")
+                        RepoDatabase::class.java, "word_database.db")
                         .build()
     }
 }

@@ -57,7 +57,7 @@ class ReposAdapter : PagingDataAdapter<UiModel, ViewHolder>(UIMODEL_COMPARATOR) 
         private val UIMODEL_COMPARATOR = object : DiffUtil.ItemCallback<UiModel>() {
             override fun areItemsTheSame(oldItem: UiModel, newItem: UiModel): Boolean {
                 return (oldItem is UiModel.RepoItem && newItem is UiModel.RepoItem &&
-                        oldItem.repo.fullName == newItem.repo.fullName) ||
+                        oldItem.repo.title == newItem.repo.title) ||
                         (oldItem is UiModel.SeparatorItem && newItem is UiModel.SeparatorItem &&
                                 oldItem.description == newItem.description)
             }

@@ -15,6 +15,7 @@
  */
 
 package com.example.android.roomwordssample.api
+import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.model.Repo
 import com.google.gson.annotations.SerializedName
 
@@ -23,6 +24,6 @@ import com.google.gson.annotations.SerializedName
  */
 data class RepoSearchResponse(
         @SerializedName("total_count") val total: Int = 0,
-        @SerializedName("items") val items: List<Repo> = emptyList(),
+        @SerializedName("items") val items: List<Word> = emptyList(),
         val nextPage: Int? = null
 )

@@ -22,6 +22,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.example.android.roomwordssample.Word
 
 import com.example.android.roomwordssample.api.GithubService
 import com.example.android.roomwordssample.api.IN_QUALIFIER
@@ -40,39 +41,41 @@ class GithubRemoteMediator(
         private val query: String,
         private val service: GithubService,
         private val repoDatabase: RepoDatabase
-) : RemoteMediator<Int, Repo>() {
+) : RemoteMediator<Int, Word>() {
 
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, Repo>): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, Word>): MediatorResult {
 
-        val page = when (loadType) {
-            LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: GITHUB_STARTING_PAGE_INDEX
-            }
-            LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                if (remoteKeys == null) {
-                    // The LoadType is PREPEND so some data was loaded before,
-                    // so we should have been able to get remote keys
-                    // If the remoteKeys are null, then we're an invalid state and we have a bug
-                    throw InvalidObjectException("Remote key and the prevKey should not be null")
-                }
-                // If the previous key is null, then we can't request more data
-                val prevKey = remoteKeys.prevKey
-                if (prevKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = true)
-                }
-                remoteKeys.prevKey
-            }
-            LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
-                if (remoteKeys == null || remoteKeys.nextKey == null) {
-                    throw InvalidObjectException("Remote key should not be null for $loadType")
-                }
-                remoteKeys.nextKey
-            }
+//        val page = when (loadType) {
+//            LoadType.REFRESH -> {
+//                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+//                remoteKeys?.nextKey?.minus(1) ?: GITHUB_STARTING_PAGE_INDEX
+//            }
+//            LoadType.PREPEND -> {
+//                val remoteKeys = getRemoteKeyForFirstItem(state)
+//                if (remoteKeys == null) {
+//                    // The LoadType is PREPEND so some data was loaded before,
+//                    // so we should have been able to get remote keys
+//                    // If the remoteKeys are null, then we're an invalid state and we have a bug
+//                    throw InvalidObjectException("Remote key and the prevKey should not be null")
+//                }
+//                // If the previous key is null, then we can't request more data
+//                val prevKey = remoteKeys.prevKey
+//                if (prevKey == null) {
+//                    return MediatorResult.Success(endOfPaginationReached = true)
+//                }
+//                remoteKeys.prevKey
+//            }
+//            LoadType.APPEND -> {
+//                val remoteKeys = getRemoteKeyForLastItem(state)
+//                if (remoteKeys == null || remoteKeys.nextKey == null) {
+//                    throw InvalidObjectException("Remote key should not be null for $loadType")
+//                }
+//                remoteKeys.nextKey
+//            }
+//
+//        }
 
-        }
+        val page = 1
 
         Log.d("pageCalling", "calling page: " + page)
 
@@ -80,7 +83,7 @@ class GithubRemoteMediator(
 
         try {
             val apiResponse = service.searchRepos(apiQuery, page, state.config.pageSize)
-
+            Log.d("repo size", "size: " + apiResponse.items.size)
             val repos = apiResponse.items
             val endOfPaginationReached = repos.isEmpty()
             repoDatabase.withTransaction {
@@ -105,7 +108,7 @@ class GithubRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Repo>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Word>): RemoteKeys? {
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
@@ -115,7 +118,7 @@ class GithubRemoteMediator(
                 }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Repo>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Word>): RemoteKeys? {
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
@@ -126,7 +129,7 @@ class GithubRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-            state: PagingState<Int, Repo>
+            state: PagingState<Int, Word>
     ): RemoteKeys? {
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position

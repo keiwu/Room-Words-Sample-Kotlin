@@ -21,20 +21,26 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.model.Repo
 
 @Dao
 interface RepoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(repos: List<Repo>)
+    suspend fun insertAll(repos: List<Word>)
 
-    @Query("SELECT * FROM repos WHERE " +
-            "name LIKE :queryString OR description LIKE :queryString " +
-            "ORDER BY stars DESC, name ASC")
-    fun reposByName(queryString: String): PagingSource<Int, Repo>
+//    @Query("SELECT * FROM word_table WHERE " +
+//            "author LIKE :queryString OR paragraph LIKE :queryString " +
+//            "ORDER BY author DESC, paragraph ASC")
+//    fun reposByName(queryString: String): PagingSource<Int, Word>
 
-    @Query("DELETE FROM repos")
+    @Query("SELECT * FROM word_table WHERE " +
+            "author LIKE :queryString OR paragraph LIKE :queryString " +
+            "ORDER BY author DESC, paragraph ASC")
+    fun reposByName(queryString: String): PagingSource<Int, Word>
+
+    @Query("DELETE FROM word_table")
     suspend fun clearRepos()
 
 }

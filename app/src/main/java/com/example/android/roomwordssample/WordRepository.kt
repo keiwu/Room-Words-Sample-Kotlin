@@ -17,6 +17,8 @@ package com.example.android.roomwordssample
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
 import com.example.android.roomwordssample.db.WordDao
 import com.example.android.roomwordssample.service.NetworkReturnedWord
 import com.example.android.roomwordssample.service.NetworkWordContainer
@@ -30,7 +32,8 @@ class WordRepository(private val wordDao: WordDao) {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    val allWords: LiveData<List<Word>> = wordDao.getAlphabetizedWords()
+    val allWords: LiveData<PagedList<Word>> = wordDao.getAlphabetizedWords().toLiveData(pageSize = 5)
+    val temp: Int = 0
 
     // You must call this on a non-UI thread or your app will crash. So we're making this a
     // suspend function so the caller methods know this.

@@ -20,6 +20,7 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.api.GithubService
 import com.example.android.roomwordssample.db.RepoDatabase
 import com.example.android.roomwordssample.model.Repo
@@ -37,7 +38,7 @@ class GithubRepository(
      * Search repositories whose names match the query, exposed as a stream of data that will emit
      * every time we get more data from the network.
      */
-    fun getSearchResultStream(query: String): Flow<PagingData<Repo>> {
+    fun getSearchResultStream(query: String): Flow<PagingData<Word>> {
         Log.d("GithubRepository", "New query: $query")
 
         // appending '%' so we can allow other characters to be before and after the query string

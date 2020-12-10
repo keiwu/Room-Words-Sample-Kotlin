@@ -10,7 +10,7 @@ data class NetworkWordContainer(val networkReturnedWord: List<NetworkReturnedWor
 
 @JsonClass(generateAdapter = true)
 data class NetworkReturnedWord(
-        var id: String?,
+        var id: Long,
         var author: String?,
         var paragraph: String?,
         var strain: String?,

@@ -17,7 +17,9 @@
 package com.example.android.roomwordssample.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.PagedList
 import com.example.android.roomwordssample.AWord
 import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.WordRepository
@@ -37,7 +39,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
-    val allWords: LiveData<List<Word>>
+    val allWords: LiveData<PagedList<Word>>
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -53,6 +55,7 @@ class WordViewModel(application: Application) : AndroidViewModel(application) {
         val wordsDao = WordRoomDatabase.getDatabase(application, viewModelScope).wordDao()
         repository = WordRepository(wordsDao)
         allWords = repository.allWords
+        Log.d("temp", "temp")
     }
 
     /**

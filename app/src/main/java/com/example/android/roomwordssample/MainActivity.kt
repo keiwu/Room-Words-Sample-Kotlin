@@ -24,6 +24,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.paging.flatMap
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ import com.example.android.roomwordssample.model.AllPoems
 import com.example.android.roomwordssample.service.WordsApi
 import com.example.android.roomwordssample.ui.ReposAdapter
 import com.example.android.roomwordssample.ui.SearchPoemsViewModel
+import com.example.android.roomwordssample.ui.WordPagingAdapter
 import com.example.android.roomwordssample.ui.WordViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
@@ -93,12 +95,14 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         //val adapter = WordListAdapter(this)
-        recyclerView.adapter = searchRepoAdapter
+        val adapter = WordPagingAdapter(this)
+        //recyclerView.adapter = searchRepoAdapter
+        recyclerView.adapter = adapter  //for poem adapter
 //        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        search("android", null)
+        search("白", null)
 
-        // Get a new or existing ViewModel from the ViewModelProvider.
+        // Get a new or existing ViewModel from the ViewModelProvideropl,.
         //wordViewModel = ViewModelProvider(this).get(WordViewModel::class.java)
 
 
@@ -110,8 +114,12 @@ class MainActivity : AppCompatActivity() {
                 Observer { words ->
                     // Update the cached copy of the words in the adapter.
                     //words?.let { adapter.setWords(it) }
+                    words?.let { adapter.submitList(it) }
                 }
         )
+
+
+        //wordViewModel.allWords.observe(this, PagedList(adapter::submitList))
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {

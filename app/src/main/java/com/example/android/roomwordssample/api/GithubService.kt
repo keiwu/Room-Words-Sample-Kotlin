@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-const val IN_QUALIFIER = "in:name,description"
+const val IN_QUALIFIER = "in:author,paragraph"
 
 /**
  * Github API communication setup via Retrofit.
@@ -34,7 +34,7 @@ interface GithubService {
     /**
      * Get repos ordered by stars.
      */
-    @GET("search/repositories?sort=stars")
+    @GET("Api.php?apicall=getpoems")
     suspend fun searchRepos(
             @Query("q") query: String,
             @Query("page") page: Int,
@@ -42,7 +42,7 @@ interface GithubService {
     ): RepoSearchResponse
 
     companion object {
-        private const val BASE_URL = "https://api.github.com/"
+        private const val BASE_URL = "http://littlewebsolution.altervista.org/poetry/v1/"
 
         fun create(): GithubService {
 //            val logger = HttpLoggingInterceptor()

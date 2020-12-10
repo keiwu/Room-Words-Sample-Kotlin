@@ -17,6 +17,7 @@
 package com.example.android.roomwordssample.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -40,7 +41,8 @@ interface WordDao {
     // data has changed. Since we are getting all the contents of the database,
     // we are notified whenever any of the database contents have changed.
     @Query("SELECT * FROM word_table ORDER BY title ASC")
-    fun getAlphabetizedWords(): LiveData<List<Word>>
+    fun getAlphabetizedWords(): DataSource.Factory<Int, Word>
+    //fun getAlphabetizedWords(): LiveData<List<Word>>
 
     //insert word one by one
     @Insert(onConflict = OnConflictStrategy.IGNORE)

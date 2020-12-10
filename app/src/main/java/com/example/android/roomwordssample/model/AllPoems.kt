@@ -6,7 +6,7 @@ class AllPoems {
     var poems: ArrayList<Poem>? = null
 
     inner class Poem {
-        var id: String? = null
+        var id: Long = 0
         var author: String? = null
         var paragraph: String? = null
         var strain: String? = null

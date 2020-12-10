@@ -36,7 +36,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "word_table")
 data class Word(
 
-                var id: String?,
+                var id: Long,
                 var author: String?,
                 var paragraph: String?,
                 var strain: String?,
@@ -59,7 +59,7 @@ fun List<Word>.asDomainModel(): List<AWord> {
 }
 
 data class AWord(
-        var id: String?,
+        var id: Long,
         var author: String?,
         var paragraph: String?,
         var strain: String?,

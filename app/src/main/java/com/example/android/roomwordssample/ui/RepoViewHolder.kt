@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.android.roomwordssample.R
+import com.example.android.roomwordssample.Word
 import com.example.android.roomwordssample.model.Repo
 
 /**
@@ -36,18 +37,18 @@ class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val language: TextView = view.findViewById(R.id.repo_language)
     private val forks: TextView = view.findViewById(R.id.repo_forks)
 
-    private var repo: Repo? = null
+    private var repo: Word? = null
 
     init {
         view.setOnClickListener {
-            repo?.url?.let { url ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            repo?.id?.let { url ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url.toString()))
                 view.context.startActivity(intent)
             }
         }
     }
 
-    fun bind(repo: Repo?) {
+    fun bind(repo: Word?) {
         if (repo == null) {
             val resources = itemView.resources
             name.text = resources.getString(R.string.loading)
@@ -60,26 +61,26 @@ class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    private fun showRepoData(repo: Repo) {
+    private fun showRepoData(repo: Word) {
         this.repo = repo
-        name.text = repo.fullName
+        name.text = repo.title
 
         // if the description is missing, hide the TextView
         var descriptionVisibility = View.GONE
-        if (repo.description != null) {
-            description.text = repo.description
+        if (repo.paragraph != null) {
+            description.text = repo.paragraph
             descriptionVisibility = View.VISIBLE
         }
         description.visibility = descriptionVisibility
 
-        stars.text = repo.stars.toString()
-        forks.text = repo.forks.toString()
+        stars.text = repo.id.toString()
+        forks.text = repo.id.toString()
 
         // if the language is missing, hide the label and the value
         var languageVisibility = View.GONE
-        if (!repo.language.isNullOrEmpty()) {
+        if (!repo.author.isNullOrEmpty()) {
             val resources = this.itemView.context.resources
-            language.text = resources.getString(R.string.language, repo.language)
+            language.text = resources.getString(R.string.language, repo.author)
             languageVisibility = View.VISIBLE
         }
         language.visibility = languageVisibility
